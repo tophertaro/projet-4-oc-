@@ -1,4 +1,5 @@
 let currentImageIndex = 0;
+let activeTag = 'all';
 
 document.addEventListener('DOMContentLoaded', function() {
     const gallery = document.querySelector('.gallery');
@@ -126,26 +127,28 @@ function createLightBox(gallery, lightboxId) {
 }
 
 
-
-
 function openLightBox(element, lightboxId) {
     const lightboxImage = document.querySelector(`#${lightboxId} .lightboxImage`);
-    const images = Array.from(document.querySelectorAll('.gallery-item')); // Toutes les images de la galerie
+    const images = Array.from(document.querySelectorAll('.gallery-item'))
+        .filter(item => activeTag === 'all' || item.getAttribute('data-gallery-tag') === activeTag); // Filtre les images par catégorie active
     currentImageIndex = images.indexOf(element); // Index de l'image cliquée
     lightboxImage.src = element.src; // Affiche l'image sélectionnée
     const modal = new bootstrap.Modal(document.getElementById(lightboxId));
     modal.show();
 }
 
+
 function showPrevImage(gallery) {
-    const images = Array.from(gallery.querySelectorAll('.gallery-item')); // Toutes les images de la galerie
+    const images = Array.from(gallery.querySelectorAll('.gallery-item'))
+        .filter(item => activeTag === 'all' || item.getAttribute('data-gallery-tag') === activeTag); // Filtre les images par catégorie active
     currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : images.length - 1; // Retour à la dernière image si on est sur la première
     const prevImage = images[currentImageIndex];
     document.querySelector('.lightboxImage').src = prevImage.src; // Met à jour l'image affichée
 }
 
 function showNextImage(gallery) {
-    const images = Array.from(gallery.querySelectorAll('.gallery-item')); // Toutes les images de la galerie
+    const images = Array.from(gallery.querySelectorAll('.gallery-item'))
+        .filter(item => activeTag === 'all' || item.getAttribute('data-gallery-tag') === activeTag); // Filtre les images par catégorie active
     currentImageIndex = (currentImageIndex < images.length - 1) ? currentImageIndex + 1 : 0; // Retour à la première image si on est sur la dernière
     const nextImage = images[currentImageIndex];
     document.querySelector('.lightboxImage').src = nextImage.src; // Met à jour l'image affichée
@@ -194,6 +197,7 @@ function showItemTags(gallery, position, tags) {
 }
 
 function filterByTag(tag) {
+    activeTag = tag;  // Stocke le tag actif
     document.querySelectorAll('.gallery-item').forEach(item => {
         const parentColumn = item.closest('.item-column');
         if (tag === 'all' || item.getAttribute('data-gallery-tag') === tag) {
