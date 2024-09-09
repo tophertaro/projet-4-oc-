@@ -90,7 +90,7 @@ body {
 	font-size: 14px;
 }
 
-#gallery {
+#gallery img {
 	/*	min-height: 100vh; */
 }
 .title{
@@ -129,6 +129,7 @@ body {
 	height: 100%;
 	object-fit: cover;
 	padding: .5em;
+	cursor: pointer;
 }
 .mg-prev, .mg-next {
 	width: 30px;
